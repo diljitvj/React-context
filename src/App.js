@@ -1,25 +1,35 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import ParentComponent from "./components/parent";
+import { ThemeProvider } from "./providers/theme.provider";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isDark: true
+    };
+  }
+
+  changeTheme = () => {
+    this.setState({
+      isDark: !this.state.isDark
+    });
+  };
+
   render() {
+    const { isDark } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className={isDark ? "dark" : "light"}>
+        <button onClick={this.changeTheme}>
+          Change Theme from Super Parent
+        </button>
+        <ThemeProvider
+          value={{ isDark, changeTheme: this.changeTheme.bind(this) }}
+        >
+          <ParentComponent />
+        </ThemeProvider>
       </div>
     );
   }
